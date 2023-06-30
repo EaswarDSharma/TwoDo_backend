@@ -1,0 +1,66 @@
+
+const animalSchema = new Schema({ name: String, type: String });
+
+  // assign a function to the "methods" object of our animalSchema
+  animalSchema.methods.findSimilarTypes = function(cb) {
+    return mongoose.model('Animal').find({ type: this.type }, cb);
+  };
+  
+  const Animal = mongoose.model('Animal', animalSchema);
+  const dog = new Animal({ type: 'dog' });
+
+  dog.findSimilarTypes((err, dogs) => {
+    console.log(dogs); // woof
+  });
+  static 
+   // Assign a function to the "statics" object of our animalSchema
+  animalSchema.statics.findByName = function(name) {
+    return this.find({ name: new RegExp(name, 'i') });
+  };
+  // Or, equivalently, you can call `animalSchema.static()`.
+  animalSchema.static('findByBreed', function(breed) { return this.find({ breed }); });
+
+  const Animal = mongoose.model('Animal', animalSchema);
+  let animals = await Animal.findByName('fido');
+  animals = animals.concat(await Animal.findByBreed('Poodle'));
+  
+  const Tank = mongoose.model('Tank', yourSchema);
+
+const small = new Tank({ size: 'small' });
+small.save(function (err) {
+  if (err) return handleError(err);
+  // saved!
+});
+
+// or
+
+Tank.create({ size: 'small' }, function (err, small) {
+  if (err) return handleError(err);
+  // saved!
+});
+
+// or, for inserting large batches of documents
+Tank.insertMany([{ size: 'small' }], function(err) {
+
+});
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

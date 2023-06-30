@@ -7,13 +7,30 @@ const Task = require('./task')
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
+        //unique: true,
         required: true,
         trim: true
     },
-    email: {
+    name2:{
         type: String,
-        unique: true,
-        required: true,
+        trim: true
+    },
+    email1: {
+        type: String,
+        //unique: true,
+       // required: ,
+        trim: true,
+        lowercase: true,
+        validate(v) {
+            if (!validator.isEmail(v)) {
+                throw new Error('Email is invalid')
+            }
+        }
+    },
+    email2: {
+        type: String,
+        // unique: true,
+       // required: true,
         trim: true,
         lowercase: true,
         validate(value) {
@@ -24,42 +41,60 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        //required: true,
         minlength: 7,
         trim: true,
-        validate(value) {
-            if (value.toLowerCase().includes('password')) {
+        validate(v) {
+            if (v.toLowerCase().includes('password')) {
                 throw new Error('Password cannot contain "password"')
             }
         }
     },
+    /*fid: {
+        type: new mongoose.Types.ObjectId(),
+        default: '',
+        required: false
+    },*/
     age: {
         type: Number,
         default: 0,
-        validate(value) {
-            if (value < 0) {
+        validate(v) {
+            if (v < 0) {
                 throw new Error('Age must be a postive number')
             }
         }
     },
-    tokens: [{
+   // tokens: [{
         token: {
             type: String,
-            required: true
+            //required: true
         }
-    }],
+   // }]
+   ,
     avatar: {
-        type: Buffer
+        type: String
+    },
+    avatar2:{
+        type:String
+    },
+    firsttimeentry:{
+        type:Boolean
     }
 }, {
     timestamps: true
 })
 
-userSchema.virtual('tasks', {
+userSchema.virtual('tasks', {    //populating
     ref: 'Task',
     localField: '_id',
     foreignField: 'owner'
 })
+
+/*userSchema.virtual('sign', {
+    ref: 'Task',
+    localField: 'name',
+    foreignField: 'signature'
+})*/
 
 userSchema.methods.toJSON = function () {
     const user = this
@@ -74,19 +109,21 @@ userSchema.methods.toJSON = function () {
 
 userSchema.methods.generateAuthToken = async function () {
     const user = this
-    const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET)
-
-    user.tokens = user.tokens.concat({ token })
+    const token = jwt.sign({ _id: user._id.toString() },'thisisasecretformyapp')/*process.env.JWT_SECRET*/
+    //user.tokens = user.tokens.concat({ token })
+    user.token=token
     await user.save()
-
     return token
 }
 
-userSchema.statics.findByCredentials = async (email, password) => {
-    const user = await User.findOne({ email })
+userSchema.statics.findByCredentials = async (email1, password) => {
+    let user = await User1.findOne({ email1 })
 
     if (!user) {
-        throw new Error('Unable to login')
+        email2=email1
+
+        user =await User1.findOne({ email2 })
+        if(!user) {  throw new Error('Unable to login')  }
     }
 
     const isMatch = await bcrypt.compare(password, user.password)
@@ -116,6 +153,6 @@ userSchema.pre('remove', async function (next) {
     next()
 })
 
-const User = mongoose.model('User', userSchema)
+const User1 = mongoose.model('User1', userSchema)
 
-module.exports = User
+module.exports = User1

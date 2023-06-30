@@ -6,6 +6,11 @@ const taskSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    /*signature:{
+        type: String,
+        required: true,
+        ref:'User1'
+    },*/
     completed: {
         type: Boolean,
         default: false
@@ -13,7 +18,7 @@ const taskSchema = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'User'
+        ref: 'User1'
     }
 }, {
     timestamps: true
