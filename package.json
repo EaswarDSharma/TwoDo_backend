@@ -4,7 +4,7 @@
   "description": "backend",
   "main": "index.js",
   "scripts": {
-    "start": "SET NODE_ENV = dev && node src/index.js",
+    "start": "set NODE_ENV = dev && node src/index.js",
     "dev": "env-cmd ./config/dev.env nodemon src/index.js",
     "test": "env-cmd ./config/test.env jest --watchAll --runInBand"
   },

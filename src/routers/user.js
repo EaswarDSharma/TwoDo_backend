@@ -2,8 +2,14 @@ const express = require('express')
 const multer = require('multer')
 const sharp = require('sharp')
 const User1 = require('../models/user')
-const auth = require('../middleware/auth')
+const auth = require('../middleware/login')
 const router = new express.Router()
+
+
+router.get('/users/me', auth, async (req, res) => {
+    res.send(req.user)
+console.log("from users get route")
+})
 
 router.post('/users',async (req, res) => { //sign up
     const user = new User1(req.body)
@@ -24,7 +30,7 @@ router.get('/users',async (req,res)=>{
 router.post('/users/login', async (req, res) => {        console.log("loginning")
 
     try {
-        h=(body)=>{if(!body.email1) {return body.email2} else {return body.email1}}
+        h=()=>{if(!req.body.email1) {return req.body.email2} else {return req.body.email1}}
         const user = await User1.findByCredentials(h(req.body), req.body.password)
         console.log("fouund")
         const token = await user.generateAuthToken()
@@ -58,10 +64,7 @@ router.post('/users/logoutAll', auth, async (req, res) => {
     }
 })
 
-router.get('/users/me', auth, async (req, res) => {
-    res.send(req.user)
 
-})
 router.patch('/users/me', auth, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'email1', 'email2','password', 'age']

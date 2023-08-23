@@ -8,15 +8,15 @@ passport.serializeUser((user, done) => {
   done(null, user);
   });
 passport.deserializeUser((id, done) => {
-    User.findById(id).then(user => { console.log("finding user from ps user:"+id)
+    User.findById(id).then(user => { //console.log("finding user from /ps/ user:"+JSON.stringify(id))
     done(null, user);
     });
   });
 passport.use(
     new GoogleStrategy(
       {
-        clientID:  '334123776825-peg3umnmfdd7suhbtitkgchhguco9h1s.apps.googleusercontent.com',
-        clientSecret: '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',
+        clientID:  '166293137845-0hcmr1heshtmdqnj7ot8dd0dn7sq940d.apps.googleusercontent.com',
+        clientSecret: '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',
         callbackURL: 'http://localhost:3010/auth/callback',
         proxy:true,
       },

@@ -1,7 +1,7 @@
 const express = require('express')
 const router =  express.Router()
 const passport= require('passport')
-const auth = require('../middleware/auth')
+const auth = require('../middleware/login')
 const User = require('../models/user')
 const app= express();
 const log=require('../middleware/login')
@@ -22,7 +22,7 @@ router.get(
     }       
     else if(!req.user.firsttimeentry){          
       app.set('user1',null);
-      res.redirect('/sal')// auto login
+      res.redirect('http://localhost:3000/')// auto login
     }
     else if(app.get('user1')){
         const profile=app.get('user1'); console.log(app.get('user1')+'is the profile');
@@ -60,6 +60,7 @@ res.send(`<div> auth checked and working</div>`)  })
     }
   );*/
 router.get('/logout',auth, (req, res) => {
+  console.log("trying to logout")
     req.logout();
     res.redirect('/people');
   });
