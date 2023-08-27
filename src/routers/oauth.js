@@ -17,12 +17,11 @@ router.get(
    async (req, res) => {
     if(req.user.firsttimeentry&&!app.get('user1')){ // first time user not found in db e12,  setting user | firsttimeentry true ////setting ,checking
        app.set('user1',req.user);  //     
-       console.log('seeting 1')//+app.get('user1'))
        res.redirect('/auth/google2')
     }       
     else if(!req.user.firsttimeentry){          
       app.set('user1',null);
-      res.redirect('http://localhost:3000/')// auto login
+      res.redirect('http://localhost:3000/admins')// auto login
     }
     else if(app.get('user1')){
         const profile=app.get('user1'); console.log(app.get('user1')+'is the profile');
@@ -36,10 +35,8 @@ router.get(
             avatar2: req.user.avatar
           }).save();
           app.set('user1',null)
-          console.log(app.get('user1')+'is the profile');
-          res.redirect('/sasasalalayeye')// sign up complete
+          res.redirect('http://localhost:3000/admins')// sign up complete
     }
-    console.log('not first time')
     }
   );
   router.get(
@@ -56,12 +53,12 @@ res.send(`<div> auth checked and working</div>`)  })
     passport.authenticate('google'),
     (req, res) => {
         console.log(req.user)
-      res.redirect('/people/me');
+      res.redirect('/');
     }
   );*/
 router.get('/logout',auth, (req, res) => {
   console.log("trying to logout")
     req.logout();
-    res.redirect('/people');
+    res.redirect('http://localhost:3000/');
   });
 module.exports=router

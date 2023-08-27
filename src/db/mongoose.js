@@ -7,6 +7,5 @@ try {mongoose.connect(MONGODB_URL, {
     useUnifiedTopology: true
 }) }
 catch(err){
-   // console.log("moooonnnggoooooo!!!")
     console.error(err);
 }

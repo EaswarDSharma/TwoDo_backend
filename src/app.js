@@ -20,7 +20,7 @@ app.use(cookieSession({
     maxAge: 9000000,
     resave:true,
     saveUninitialized: true,
-    secret:"767",
+    secret:"939",
     keys: ["key"]
   })
 );

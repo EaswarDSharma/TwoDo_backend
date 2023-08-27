@@ -58,15 +58,12 @@ router.get('/tasks/:id', auth, async (req, res) => {
         const task = await Task.findOne({
             _id : req.params.id,
             owner: req.user._id
-             }).cache( {key: req.user._id}); // it should be owner bruh..
-           // console.log(req.user._id+"from req")
+             }).cache( {key: req.user._id}); // it should be owner bruh.. Future
         if (!task) {
             return res.status(404).send()
         }
-        //console.log("from mongoDB")
         res.send(task);
 
-        //client.set(_id, JSON.stringify(task))
     } catch (e) {
         res.status(500).send()
     }

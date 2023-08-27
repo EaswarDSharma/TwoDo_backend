@@ -8,7 +8,6 @@ const router = new express.Router()
 
 router.get('/users/me', auth, async (req, res) => {
     res.send(req.user)
-console.log("from users get route")
 })
 
 router.post('/users',async (req, res) => { //sign up
@@ -16,25 +15,21 @@ router.post('/users',async (req, res) => { //sign up
 
     try {
         await user.save()
-        console.log("saved user!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         const token = await user.generateAuthToken()
         //console.log(user)
         res.status(201).send({ user, token })
     } catch (e) {
         res.status(400).send(e)
     }
-})/*
-router.get('/users',async (req,res)=>{
-
-})*/
-router.post('/users/login', async (req, res) => {        console.log("loginning")
+})
+router.post('/users/login', async (req, res) => {      
 
     try {
         h=()=>{if(!req.body.email1) {return req.body.email2} else {return req.body.email1}}
         const user = await User1.findByCredentials(h(req.body), req.body.password)
-        console.log("fouund")
+        //console.log("fouund")
         const token = await user.generateAuthToken()
-        console.log("tokened")
+        //console.log("tokened")
         res.send({ user, token })
     } catch (e) {
         res.status(400).send()
@@ -86,7 +81,6 @@ router.patch('/users/me', auth, async (req, res) => {
 router.delete('/users/me', auth, async (req, res) => {
     try {
         await req.user.remove()
-        //sendCancelationEmail(req.user.email, req.user.name)
         res.send(req.user)
     } catch (e) {
         res.status(500).send()
